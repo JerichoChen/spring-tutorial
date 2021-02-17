@@ -1,11 +1,13 @@
 package org.example.spring.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
+import org.example.spring.aspect.LogTime;
 import org.example.spring.model.Student;
 import org.example.spring.service.IStuService;
 import org.springframework.stereotype.Service;
 
 @Slf4j
+@LogTime
 @Service("stuService")
 public class StuServiceImpl implements IStuService {
     @Override
@@ -24,4 +26,23 @@ public class StuServiceImpl implements IStuService {
     public void hello(String name) {
         log.info("HELLO [{}]!", name);
     }
+
+    @Override
+    public Student getStudentAfterReturning(String name, Integer age) {
+        return Student.builder().name(name).age(age).build();
+    }
+
+    @Override
+    public Student getStudentAfterThrowing(String name, Integer age) {
+        //手动异常
+        double d = 1.0 / 0.0;
+        return Student.builder().name(name).age(age).build();
+    }
+
+    @LogTime
+    @Override
+    public Student getStudentAround(String name, Integer age) {
+        return Student.builder().name(name).age(age).build();
+    }
+
 }
