@@ -1,6 +1,9 @@
 package org.example.spring.config;
 
-import org.springframework.context.annotation.*;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.io.ClassPathResource;
 
@@ -11,11 +14,13 @@ import org.springframework.core.io.ClassPathResource;
 public class SpringConfig {
 
     /**
+     * 等同于: @PropertySource({"classpath:jdbc.properties"})
      * 解决引入配置文件的问题
      * <context:property-placeholder location="classpath:com/something/jdbc.properties"/>
      * PropertyPlaceholderConfig (过时) ->  PropertySourcesPlaceholderConfigurer
      */
-    @Bean
+    // @Bean
+    @SuppressWarnings("unused")
     public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
 
         PropertySourcesPlaceholderConfigurer placeholderConfigurer = new PropertySourcesPlaceholderConfigurer();
