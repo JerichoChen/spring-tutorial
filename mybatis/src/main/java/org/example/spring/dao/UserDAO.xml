@@ -1,0 +1,110 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.example.spring.dao.UserDAO">
+
+    <!-- 开启本 Mapper 下的 namespace 下的二级缓存 -->
+    <!--eviction策略有FIFO, LRU, SOFT, WEAK-->
+    <!--flushInterval="60000" 每60s清理一次缓存-->
+    <!--缓存大小512条数据-->
+    <cache eviction="FIFO" flushInterval="60000" size="512" readOnly="true"/>
+
+    <!--使用<sql>标签 定义sql片段, 以便重用. 片段中可以定义变量${xxx}, 变量的值在引用片段的时候提供.-->
+    <sql id="select*">
+        SELECT *
+        FROM ${tableName}
+    </sql>
+
+    <select id="listAll" resultType="user">
+        <include refid="select*">
+            <property name="tableName" value="USER_2"/>
+        </include>
+        ORDER BY user_id DESC
+    </select>
+    <!-- <where>标签是<trim>的一种特殊形式. 还有一个<set>标签
+    三者应对myBatis源码中的 WhereSqlNode, TrimSqlNode, SetSqlNode.
+    其中TrimSql为父类. 具体可见源码, 代码清晰, 功能及用法明确.
+   -->
+    <select id="findByNameOrAge" parameterType="searchUserDTO" resultType="user">
+        <include refid="select*">
+            <property name="tableName" value="USER_2"/>
+        </include>
+        <where>
+            <if test="userName!=null and userName !=''">
+                user_name = #{userName}
+            </if>
+            <if test="userAge > 0 ">
+                OR user_age = #{userAge}
+            </if>
+        </where>
+    </select>
+
+    <!--
+        参数类型对应的foreach的collection名字:
+        array -> array, arg0
+        list -> list, arg0
+        collection -> collection, arg0
+        如果是多个参数, 则默认是arg0, arg1, param1, param2...
+    -->
+    <select id="findByIds" parameterType="list" resultType="user">
+        <include refid="select*">
+            <property name="tableName" value="USER_2"/>
+        </include>
+        <where>
+            <if test="!list.isEmpty">
+                user_id IN
+                <foreach collection="list" item="id" open="(" close=")" separator="," index="idx">
+                    #{id}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+    <!--foreach-->
+    <select id="findByIdsOrNames" resultType="user">
+        <include refid="select*">
+            <property name="tableName" value="USER_2"/>
+        </include>
+        <where>
+            <if test="!ids.isEmpty">
+                user_id IN
+                <foreach collection="ids" item="id" open="(" close=")" separator="," index="idx">
+                    #{id}
+                </foreach>
+            </if>
+            <if test="!names.isEmpty">
+                OR user_name IN
+                <foreach collection="names" item="name" open="(" close=")" separator="," index="idx">
+                    #{name}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+    <!--choose, when, otherwise-->
+    <select id="findByIdsOtherwiseNames" resultType="user">
+        <include refid="select*">
+            <property name="tableName" value="USER_2"/>
+        </include>
+
+        <choose>
+            <when test="!ids.isEmpty">
+                WHERE user_id IN
+                <foreach collection="ids" item="id" open="(" close=")" separator="," index="idx">
+                    #{id}
+                </foreach>
+            </when>
+            <when test="!names.isEmpty">
+                WHERE user_name IN
+                <foreach collection="names" item="name" open="(" close=")" separator="," index="idx">
+                    #{name}
+                </foreach>
+            </when>
+            <otherwise>
+                WHERE user_id > 0
+            </otherwise>
+        </choose>
+    </select>
+
+</mapper>
