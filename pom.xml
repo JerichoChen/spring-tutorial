@@ -10,6 +10,7 @@
     <modules>
         <module>aop</module>
         <module>mybatis</module>
+        <module>spel</module>
     </modules>
 
     <packaging>pom</packaging>
