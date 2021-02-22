@@ -1,4 +1,4 @@
-package org.example.spring.model;
+package org.example.spring.config;
 
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -8,10 +8,10 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PreDestroy;
 
+@Slf4j
 @Data
 @Component
-@Slf4j
-public class User implements InitializingBean {
+public class JdbcConfig implements InitializingBean {
     /*
      * 使用@Value时, 对于找不到的表达式,  默认会as-is做为属性的值.
      * 这样对于非String类型的会报类型不匹配.
@@ -19,25 +19,25 @@ public class User implements InitializingBean {
      * ${} -> 属性占位符
      * #{} -> EL表达式
      * */
-    @Value("${user.id}")
-    private Integer userId;
-
-    @Value("${user.name}")
+    @Value("${jdbc.username}")
     private String userName;
 
-    @Value("${user.age}")
-    private Integer userAge;
+    @Value("${jdbc.password}")
+    private Integer password;
 
-    @Value("${user.email}")
-    private String email;
+    @Value("${jdbc.url}")
+    private String url;
+
+    @Value("${jdbc.driver}")
+    private String driver;
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        log.info("[User] HELLO, THIS IS {}!", userName);
+        log.info("afterPropertiesSet");
     }
 
     @PreDestroy
     public void beforeDestroy() throws Exception {
-        log.info("[User] BYE-BYE FROM {}!", userName);
+        log.info("beforeDestroy");
     }
 }

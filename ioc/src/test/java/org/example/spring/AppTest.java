@@ -1,8 +1,9 @@
 package org.example.spring;
 
+import org.example.spring.config.JdbcConfig;
 import org.example.spring.config.SpringConfig;
+import org.example.spring.config.User;
 import org.example.spring.model.Student;
-import org.example.spring.model.User;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,7 @@ public class AppTest {
     private User user;
 
     @Autowired
-    private Student stu;
+    private JdbcConfig jdbcConfig;
 
     @Test
     public void test() {
@@ -33,8 +34,18 @@ public class AppTest {
     @Test
     public void testUser() {
         System.out.println("user = " + user);
-        System.out.println("stu = " + stu);
     }
 
+    @Test
+    public void testJdbcConfig() {
+        System.out.println("JdbcConfig = " + jdbcConfig);
+    }
 
+    @Autowired
+    private Student stu;
+
+    @Test
+    public void testStudent() {
+        System.out.println("stu = " + stu);
+    }
 }
