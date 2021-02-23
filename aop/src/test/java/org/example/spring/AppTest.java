@@ -1,25 +1,28 @@
 package org.example.spring;
 
 import lombok.extern.slf4j.Slf4j;
-import org.example.spring.aware.SpringUtil;
+import org.example.spring.config.AppConfig;
 import org.example.spring.model.Student;
 import org.example.spring.service.IStuService;
 import org.junit.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringRunner;
 
 /**
  * Unit test for simple App.
  */
 @Slf4j
+@RunWith(SpringRunner.class)
+@ContextConfiguration(classes = AppConfig.class)
 public class AppTest {
-    private String APPLICATION_CONFIG = "application-config.xml";
-    private ApplicationContext context = new ClassPathXmlApplicationContext(APPLICATION_CONFIG);
-    private IStuService stuService = SpringUtil.getBean("stuService", IStuService.class);
+//    private String APPLICATION_CONFIG = "application-config.xml";
+//    private ApplicationContext context = new ClassPathXmlApplicationContext(APPLICATION_CONFIG);
+//    private IStuService stuService = SpringUtil.getBean("stuService", IStuService.class);
 
-    {
-        log.info("{}", stuService.getClass().getName());
-    }
+    @Autowired
+    private IStuService stuService;
 
     @Test
     public void testBefore() {
