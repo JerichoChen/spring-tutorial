@@ -1,5 +1,6 @@
 package org.example.spring.config;
 
+import org.example.spring.aspect.EnableApiLogTime;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
@@ -15,5 +16,6 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
         "org.example.spring.service",
         "org.example.spring.aspect",
         "org.example.spring.aware"})
+@EnableApiLogTime
 public class AppConfig {
 }

@@ -42,6 +42,7 @@ public class StuServiceImpl implements IStuService {
     @LogTime
     @Override
     public Student getStudentAround(String name, Integer age) {
+        log.info("invoke {}.getStudentAround({}, {})", getClass().getSimpleName(), name, age);
         return Student.builder().name(name).age(age).build();
     }
 
