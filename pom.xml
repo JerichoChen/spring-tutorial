@@ -12,6 +12,7 @@
         <module>aop</module>
         <module>mybatis</module>
         <module>spel</module>
+        <module>tx</module>
     </modules>
 
     <packaging>pom</packaging>

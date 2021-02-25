@@ -1,9 +1,8 @@
 package org.example.spring.listener;
 
 import lombok.extern.slf4j.Slf4j;
-import org.example.spring.model.SearchUserDTO;
+import org.example.spring.config.User;
 import org.example.spring.model.StudentEvent;
-import org.example.spring.model.User;
 import org.springframework.context.event.ContextStoppedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.annotation.Order;
@@ -33,7 +32,7 @@ public class MyListener {
      * 可同时监听两种事件类型, 但是无法在方法中获取到监听的具体事件
      */
     @Order(0)
-    @EventListener(classes = {User.class, SearchUserDTO.class})
+    @EventListener(classes = {User.class})
     public void listener1() {
         log.warn("listener-1监听到[User,SearchUserDTO]事件");
     }
@@ -58,14 +57,17 @@ public class MyListener {
      * 如果返回的是Array或者Collection, 则里面的每一个元素都会被单独发布.
      * note: 一定要注意避免死循环, 会造成stackOverflow
      *
-     * @param stu
      * @return User 返回User
      */
     @Order(1)
     @EventListener
     public User listener3(StudentEvent stu) {
         log.warn("listener-3监听到StudentEvent事件: {}", stu);
-        User user = User.builder().userId(1111).userName("测试").userAge(19).email("abc@spring.io").build();
+
+        User user = new User();
+        user.setUserId(1111);
+        user.setUserName("测试");
+        user.setEmail("abc@spring.io");
         return user;
     }
 
