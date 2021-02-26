@@ -20,5 +20,14 @@ public class TestProductService {
         System.out.println("res = " + res);
     }
 
+    @Test
+    public void update() {
+        Product product = new Product();
+        product.setId(1001);
+        product.setAmount(-10);
+        int res = service.update(product);
+        System.out.println("res = " + res);
+    }
+
 
 }

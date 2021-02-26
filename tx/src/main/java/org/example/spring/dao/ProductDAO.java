@@ -7,8 +7,7 @@ import org.example.spring.model.Product;
 
 @Mapper
 public interface ProductDAO {
-    @Update("UPDATE produce SET (gid, quantity) VALUES " +
-            "(#{gid}, #{quantity})")
+    @Update("UPDATE product SET amount = amount - #{amount} WHERE id = #{id}")
     int update(Product product);
 
     @Select("SELECT * FROM product WHERE id = #{id}")

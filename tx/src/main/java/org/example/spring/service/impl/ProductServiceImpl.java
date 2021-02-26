@@ -1,12 +1,14 @@
 package org.example.spring.service.impl;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.example.spring.dao.ProductDAO;
 import org.example.spring.model.Product;
 import org.example.spring.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @AllArgsConstructor(onConstructor_ = @Autowired)
 public class ProductServiceImpl implements ProductService {
@@ -14,7 +16,10 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public int update(Product product) {
-        return productDAO.update(product);
+        int update = productDAO.update(product);
+//        int i = 1 / 0;
+//        System.out.println("i = " + i);
+        return update;
     }
 
     @Override
