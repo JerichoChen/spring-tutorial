@@ -8,7 +8,11 @@ import org.example.spring.model.Product;
 import org.example.spring.model.SaleRecord;
 import org.example.spring.service.BuyProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.QueryTimeoutException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
@@ -17,6 +21,12 @@ public class BuyProductServiceImpl implements BuyProductService {
     private final ProductDAO productDAO;
     private final SaleRecordDAO saleRecordDAO;
 
+    @Transactional(
+//            transactionManager = "txManager",
+            propagation = Propagation.REQUIRED,
+            isolation = Isolation.REPEATABLE_READ,
+            noRollbackFor = {QueryTimeoutException.class},
+            timeout = 10)
     @Override
     public void buy(Integer productId, Integer quantity) {
         log.info("BuyProductServiceImpl.buy({},{})", productId, quantity);
@@ -33,7 +43,10 @@ public class BuyProductServiceImpl implements BuyProductService {
             throw new RuntimeException("商品不存在: id=" + productId);
         } else if (product.getAmount() < quantity) {
             throw new RuntimeException("商品库存不足: amount=" + product.getAmount() + ", 需要: q'ty=" + quantity);
+        } else if (true) {
+            throw new QueryTimeoutException("超时了");
         }
+
         //2. 更新库存
         Product buyProduct = new Product();
         buyProduct.setId(productId);

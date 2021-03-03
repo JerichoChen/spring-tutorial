@@ -11,10 +11,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 @ContextConfiguration(classes = {SpringConfig.class})
 public class TestBuyProductService {
     @Autowired
-    private BuyProductService service;
+    private BuyProductService buyService;
 
     @Test
     public void buy() {
-        service.buy(1001, 100);
+        buyService.buy(1001, 11);
     }
 }
