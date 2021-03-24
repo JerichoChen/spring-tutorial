@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.PropertySource;
 
+import javax.sql.DataSource;
+
 @MapperScan("org.example.spring.dao")
 @PropertySource({"classpath:jdbc.properties"})
 public class MyBatisConfig {
@@ -25,11 +27,11 @@ public class MyBatisConfig {
 
 
     @Bean
-    public SqlSessionFactory sqlSessionFactory() throws Exception {
+    public SqlSessionFactory sqlSessionFactory(DataSource dataSource, Configuration conf) throws Exception {
         SqlSessionFactoryBean factory = new SqlSessionFactoryBean();
-        factory.setDataSource(dataSource());
+        factory.setDataSource(dataSource);
         factory.setTypeAliasesPackage("org.example.spring.model");
-        factory.setConfiguration(conf());
+        factory.setConfiguration(conf);
         return factory.getObject();
     }
 

@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Scope;
 
 import java.util.Random;
 
+//@Profile本质上还是@Conditional, 由@ActiveFiles启动
 @Profile("dev")
 @Configuration
 public class BeanConfig {
